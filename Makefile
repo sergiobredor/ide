@@ -3,7 +3,7 @@ IMG_IDE=cs50/ide
 CON_OFF=ide50
 IP := 127.0.0.1
 
-PLUGINS := audioplayer browser debug gist hex info presentation statuspage theme
+PLUGINS := audioplayer browser cat debug gist hex info presentation statuspage theme
 PLUGINS1 := simple
 
 # pick right tool for opening IDE in browser
