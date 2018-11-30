@@ -17,7 +17,7 @@ define getplugin1
 	@echo "\nFetching $(1)..."
 	@plugin_dir="files/plugins/c9.ide.cs50.$(1)"; \
 	mkdir -p "$$plugin_dir"; \
-	git clone --depth=1 "https://github.com/sergiobredor/harvard.cs50.$(1)" "$$plugin_dir"; \
+	git clone "https://github.com/sergiobredor/harvard.cs50.$(1)" "$$plugin_dir"; \
 	rm -rf "$$plugin_dir/README.md" "$$plugin_dir/.git"*
 
 endef
