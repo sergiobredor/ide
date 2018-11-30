@@ -3,7 +3,8 @@ IMG_IDE=cs50/ide
 CON_OFF=ide50
 IP := 127.0.0.1
 
-PLUGINS := audioplayer browser cat debug gist hex info presentation simple statuspage theme
+PLUGINS := audioplayer browser debug gist hex info presentation statuspage theme
+PLUGINS1 := simple
 
 # pick right tool for opening IDE in browser
 ifeq ($(shell uname), Linux)
@@ -12,11 +13,20 @@ else
     OPEN=open
 endif
 
+define getplugin1
+	@echo "\nFetching $(1)..."
+	@plugin_dir="files/plugins/c9.ide.cs50.$(1)"; \
+	mkdir -p "$$plugin_dir"; \
+	git clone --depth=1 "https://github.com/sergiobredor/harvard.cs50.$(1)" "$$plugin_dir"; \
+	rm -rf "$$plugin_dir/README.md" "$$plugin_dir/.git"*
+
+endef
+
 define getplugin
 	@echo "\nFetching $(1)..."
 	@plugin_dir="files/plugins/c9.ide.cs50.$(1)"; \
 	mkdir -p "$$plugin_dir"; \
-	git clone --depth=1 "git@github.com:cs50/harvard.cs50.$(1).git" "$$plugin_dir"; \
+	git clone --depth=1 "https://github.com/cs50/harvard.cs50.$(1)" "$$plugin_dir"; \
 	rm -rf "$$plugin_dir/README.md" "$$plugin_dir/.git"*
 
 endef
@@ -45,6 +55,7 @@ build:
 	rm -rf files/plugins
 	mkdir files/plugins
 	$(foreach plugin,$(PLUGINS),$(call getplugin,$(plugin)))
+	$(foreach plugin,$(PLUGINS1),$(call getplugin1,$(plugin)))
 	rm -rf files/plugins/*/.{git,gitignore}
 	docker build --no-cache -t $(IMG_IDE) .
 
@@ -53,4 +64,3 @@ clean: stop
 	rm -rf files/plugins || true
 	docker rm $(CON_OFF) || true
 	docker rmi $(IMG_IDE) || true
-
